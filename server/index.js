@@ -1,33 +1,28 @@
-import path from 'path';
-import fs from 'fs';
+import http from 'http';
 import React from 'react';
-import express from 'express';
 import ReactDOMServer from 'react-dom/server';
+
+import  {StaticRouter} from 'react-router-dom';
 
 import App from '../src/App';
 
-const PORT = process.env.PORT || 3006;
-const app = express();
 
+http.createServer( (req, res) => {
 
-app.get('/', (req, res) => {
-    const app = ReactDOMServer.renderToString(<App />);
+    const context = {};
+    const html = ReactDOMServer.renderToString(
+        <StaticRouter location={req.url} context={context}>
+            <App />
+        </StaticRouter>);
 
-    const indexFile = path.resolve('./build/index.html');
-    fs.readFile(indexFile, 'utf8', (err, data) =>{
-        if (err) {
-            console.error('Something went wrong');
-            return res.status(500).send('Oops, better luck next time!');
-        }
+    if (context.url) {
+        res.writeHead(301, {
+            Location: context.url
+        });
+        res.end();
+    } else {
+        res.write(`<!doctype html> <div id="app">${html}</div>`);
+        res.end();
+    }
 
-        return res.send(
-            data.replace('<div id="root"></div>', `<div id="root">${app}</div>`)
-        );
-    })
-})
-
-app.use(express.static('./build'));
-
-app.listen(PORT, () =>{
-    console.log(`Server is listening on port ${PORT}`);
-})
+}).listen(3000);

@@ -1,9 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {BrowserRouter} from "react-router-dom";
 import './index.css';
 import App from './App';
 
-ReactDOM.hydrate(<App />, document.getElementById('root'));
+ReactDOM.hydrate(
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>
+    , document.getElementById('app'));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
