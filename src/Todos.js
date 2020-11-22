@@ -16,22 +16,9 @@ class Todos extends React.Component {
         }
     }
 
-    componentDidMount() {
-        setTimeout(() => {
-            if (window.__ROUTE_DATA__) {
-                this.setState({
-                    data: window.__ROUTE_DATA__
-                });
-                delete window.__ROUTE_DATA__;
-            } else {
-                loadData('todos').then( data => {
-                    this.setState({data});
-                });
-            }
-        }, 0);
-    }
-
     render() {
+        console.log('state');
+        console.log(this.state);
         const {data} = this.state;
         return <ul>{data.map(todo => <li key={todo.id}>{todo.title}</li>)}</ul>
     }

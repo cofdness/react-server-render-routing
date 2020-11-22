@@ -28,7 +28,7 @@ export default () =>
         </ul>
 
         <Switch>
-            {Routes.map(route => <Route {...route}/>)}
+            {Routes.map((route, index) => <Route {...route} key={index}/>)}
             <RedirectWithStatus status={301} from="/users" to="/profiles" />
             <RedirectWithStatus status={302} from="/courses" to="/dashboard" />
         </Switch>
